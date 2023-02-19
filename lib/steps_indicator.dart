@@ -62,7 +62,7 @@ class StepsIndicator extends StatefulWidget {
   /// Unselected step border size [default = 14]
   final double unselectedStepBorderSize;
   final Widget? doneStepWidget;
-  final Widget? unselectedStepWidget;
+  final List<Widget>? unselectedStepWidget;
   final Widget? selectedStepWidget;
   final List<StepsIndicatorCustomLine>? lineLengthCustomStep;
 
@@ -248,14 +248,14 @@ class _StepsIndicatorState extends State<StepsIndicator>
   Widget stepBuilder(int i) {
     if (widget.isHorizontal) {
       // Display in Row
-      return widget.selectedStep == i
+      return widget.selectedStep > i
           ? Row(
               children: <Widget>[
                 stepSelectedWidget(i),
                 widget.selectedStep == widget.nbSteps
                     ? stepLineDoneWidget(i)
                     : Container(),
-                i != widget.nbSteps - 1 ? stepLineUndoneWidget(i) : Container()
+                i != widget.nbSteps - 1 ? stepLineDoneWidget(i) : Container()
               ],
             )
           : widget.selectedStep > i
@@ -324,7 +324,7 @@ class _StepsIndicatorState extends State<StepsIndicator>
           return Container(
             width: size,
             height: size,
-            child: widget.unselectedStepWidget ??
+            child: widget.unselectedStepWidget?[i] ??
                 StepWidget().generateSelectedStepWidget(
                     colorIn: widget.unselectedStepColorIn,
                     colorOut: widget.unselectedStepColorOut,
@@ -335,7 +335,7 @@ class _StepsIndicatorState extends State<StepsIndicator>
       );
     }
 
-    return widget.unselectedStepWidget ??
+    return widget.unselectedStepWidget?[i] ??
         StepWidget().generateSelectedStepWidget(
             colorIn: widget.unselectedStepColorIn,
             colorOut: widget.unselectedStepColorOut,
